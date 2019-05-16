@@ -16,16 +16,16 @@
                    :resource-paths ["test/resources"]
                    :dependencies
                    [[org.clojure/test.check "0.10.0-alpha3"]
-                    ;[expectations "2.2.0-SNAPSHOT"]]
-                   :plugins
-                   [[lein-sub "0.3.0"]                    
+                    ;[expectations "2.2.0-SNAPSHOT"]
+                    ]
                    :leiningen/reply
                    {:dependencies [[org.slf4j/jcl-over-slf4j "1.8.0-beta0"]]
                     :exclusions [commons-logging]}
-                   :repl-options {:init-ns data-test}}
+                   }
              :test {:test-paths ["test/src"]
                     :resource-paths ["test/resources"]
-                    :dependencies [;[expectations "2.2.0-SNAPSHOT"]]}
+                    :dependencies [;[expectations "2.2.0-SNAPSHOT"]
+                                   ]}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
