@@ -31,7 +31,11 @@
 
 (defmacro defdatatest [name & body]
   `(do
-      (ct/deftest ~name 
-        (let [testdata (sut/read-data (io/resource "should-test-with-data-macro-version.edn"))
+      (ct/deftest ~name
+        ;TODO-1: bring macro to work
+        ;TODO-2: crate filename out of package/namespace/test-name.edn
+        ;TODO-3: enable more than one test-data-set with optional infix .##
+        (let [testdata (sut/read-data
+                        (io/resource "data_test_test/should-test-with-data-macro-version.edn"))
               {:keys [input expectation]} testdata]
           ~body))))
