@@ -1,0 +1,3 @@
+{:to-be-refernced "ref-test"
+ :key1 #ref [:to-be-refernced]
+ :key2 #ref [:to-be-refernced]}
