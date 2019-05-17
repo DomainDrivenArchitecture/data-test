@@ -3,4 +3,4 @@
  :aliases {:1.8 {:override-deps {org.clojure/clojure {:mvn/version "1.8.0"}}}
            :1.9 {:override-deps {org.clojure/clojure {:mvn/version "1.9.0"}}}
            :test {:paths ["main/src" "test/src"] 
-                  :extra-deps {org.clojure/core.cache {:mvn/version "0.7.1"}}}
+                  :extra-deps {org.clojure/core.cache {:mvn/version "0.7.1"}}}}}
