@@ -15,27 +15,22 @@
 ; limitations under the License.
 (ns data-test
   (:require
-   [clojure.java.io :as io]
    [clojure.test :as ct]
    [schema.core :as s]
-   [aero.core :as aero]))
+   [data-test.runner :as runner]))
 
-;TODO: replace schema with spec
-(def TestDataSet
-  {:input s/Any
-   :expectation s/Any})
-
-(defn read-data
-  [resource-url]
-  (aero/read-config resource-url))
+(s/defn test-with-data 
+  [test-name :- s/Keyword]
+  (runner/run-test (runner/create-test-runner test-name)))
 
 (defmacro defdatatest [name & body]
-  `(do
-      (ct/deftest ~name
-        ;TODO-1: bring macro to work
-        ;TODO-2: crate filename out of package/namespace/test-name.edn
-        ;TODO-3: enable more than one test-data-set with optional infix .##
-        (let [testdata (sut/read-data
-                        (io/resource "data_test_test/should-test-with-data-macro-version.edn"))
-              {:keys [input expectation]} testdata]
-          ~body))))
+  '(do
+    (clojure.test/deftest ~name
+      ;TODO-1: bring macro to work
+      ;TODO-2: crate filename out of package/namespace/test-name.edn
+      ;TODO-3: enable more than one test-data-set with optional infix .##
+      (let [testdata (data-test/read-data
+                      (clojure.java.io/resource 
+                       "data_test_test/should-test-with-data-macro-version.edn"))
+            {:keys [input expectation]} testdata]
+        ~@body))))

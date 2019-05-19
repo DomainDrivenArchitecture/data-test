@@ -13,27 +13,28 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns data-test-test
+(ns data-test.runner-test
   (:require
-   [clojure.test :refer :all]
    [clojure.java.io :as io]
+   [clojure.test :refer :all]
    [schema.core :as s]
-   [data-test.runner :as runner]
-   [data-test :as sut]))
+   [data-test.runner :as sut]))
 
-(deftest should-test-with-data-explicit-version
-  (let [testdata (runner/read-data (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
-        {:keys [input expectation]} testdata]
-    (is (= expectation
-           input))))
+(deftest should-read-data
+  (is (= {:simple "test"}
+         (sut/read-data (io/resource "simple_aero.edn"))))
+  (is (= {:to-be-refernced "ref-test", :key1 "ref-test", :key2 "ref-test"}
+         (sut/read-data (io/resource "tagged_aero.edn"))))
+  )
 
-(s/defmethod runner/data-test ::should-test-with-data-record-version
+(deftest should-calculate-data-file-prefix
+  (is (= "data_test/runner_test/test_it"
+         (sut/data-file-prefix (sut/create-test-runner ::test-it)))))
+
+(s/defmethod sut/data-test ::test-it
   [_ input :- s/Any expectation :- s/Any]
-  (= expectation
-     input))
+  "my-result")
 
-(deftest should-test-with-data-record-version
-  (is (sut/test-with-data ::should-test-with-data-record-version)))
-
-;;(macroexpand '(sut/defdatatest should-test-with-data-macro-version
-;;                (is ture)))
+(deftest should-reslove-multimethod
+  (is (= "my-result"
+         (sut/data-test (sut/create-test-runner ::test-it) nil nil))))
