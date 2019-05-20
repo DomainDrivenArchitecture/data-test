@@ -33,7 +33,7 @@
 
 (deftest should-load-data
   (is (= {:test "data"}
-         (sut/load-test-data ::test-it))))
+         (sut/load-test-data (sut/data-file-prefix ::test-it)))))
 
 (s/defmethod sut/data-test ::test-it
   [_ input :- s/Any expectation :- s/Any]

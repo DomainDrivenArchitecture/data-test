@@ -59,7 +59,7 @@
 
 (s/defn load-test-data
   [file-prefix :- s/Str]
-  (let [file-path (str (data-file-prefix file-prefix) ".edn")]
+  (let [file-path (str file-prefix ".edn")]
     (println file-path)
     (read-data
      (io/resource file-path))))
