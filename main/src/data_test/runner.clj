@@ -31,8 +31,9 @@
 
 (defprotocol RunTest
   "Protocol for data driven tests"
+  (name-prefix [dda-test])
   (run-test [dda-test])
-  (name-prefix [dda-test]))
+  )
 
 (s/defn dispatch-by-name :- s/Keyword
   "Dispatcher for data-tests."
@@ -50,24 +51,27 @@
   (aero/read-config resource-url))
 
 (s/defn data-file-prefix :- s/Str
-  [runner :- TestRunner]
-  (let [name-key (:name runner)]
-    (str/replace
-      (str/replace (str (namespace name-key) "/" (name name-key))
-                   #"-" "_")
-      #"\." "/")))
+  [name-key :- s/Keyword]
+  (str/replace
+    (str/replace (str (namespace name-key) "/" (name name-key))
+                  #"-" "_")
+    #"\." "/"))
+
+(s/defn load-test-data
+  [file-prefix :- s/Str]
+  (let [file-path (str (data-file-prefix file-prefix) ".edn")]
+    (println file-path)
+    (read-data
+     (io/resource file-path))))
 
 (extend-type TestRunner
   RunTest
   (name-prefix [_]
-    (data-file-prefix _))
+    (data-file-prefix (:name _)))
   (run-test [_]
-            (println (data-file-prefix _))
-            (let [testdata (read-data
-                            (io/resource "data_test_test/should-test-with-data-record-version.edn"))
-                             ;(str (data-file-prefix _) ".edn")))
-                  {:keys [input expectation]} testdata]
-              (data-test _ input expectation))))
+    (let [testdata (load-test-data (data-file-prefix (:name _)))
+          {:keys [input expectation]} testdata]
+      (data-test _ input expectation))))
 
 (defn create-test-runner 
   [test-name]

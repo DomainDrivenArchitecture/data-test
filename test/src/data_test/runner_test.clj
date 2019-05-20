@@ -29,7 +29,11 @@
 
 (deftest should-calculate-data-file-prefix
   (is (= "data_test/runner_test/test_it"
-         (sut/data-file-prefix (sut/create-test-runner ::test-it)))))
+         (sut/data-file-prefix ::test-it))))
+
+(deftest should-load-data
+  (is (= {:test "data"}
+         (sut/load-test-data ::test-it))))
 
 (s/defmethod sut/data-test ::test-it
   [_ input :- s/Any expectation :- s/Any]
