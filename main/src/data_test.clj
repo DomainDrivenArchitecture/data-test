@@ -21,7 +21,7 @@
 
 (s/defn test-with-data 
   [test-name :- s/Keyword]
-  (runner/run-test (runner/create-test-runner test-name)))
+  (runner/run-tests (runner/create-test-runner test-name)))
 
 (defmacro defdatatest [name & body]
   '(do

@@ -32,7 +32,7 @@
 (defprotocol RunTest
   "Protocol for data driven tests"
   (name-prefix [dda-test])
-  (run-test [dda-test])
+  (run-tests [dda-test])
   )
 
 (s/defn dispatch-by-name :- s/Keyword
@@ -60,7 +60,6 @@
 (s/defn load-test-data
   [file-prefix :- s/Str]
   (let [file-path (str file-prefix ".edn")]
-    (println file-path)
     (read-data
      (io/resource file-path))))
 
@@ -68,7 +67,7 @@
   RunTest
   (name-prefix [_]
     (data-file-prefix (:name _)))
-  (run-test [_]
+  (run-tests [_]
     (let [testdata (load-test-data (data-file-prefix (:name _)))
           {:keys [input expectation]} testdata]
       (data-test _ input expectation))))
