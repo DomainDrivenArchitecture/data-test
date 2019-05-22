@@ -23,26 +23,11 @@
   [test-name :- s/Keyword]
   (runner/run-tests (runner/create-test-runner test-name)))
 
-(defn datatestdef-form [namespaced-test-key body]
-  '(do 
-     (clojure.test/deftest ~(symbol (name namespaced-test-key))
-       ;(let [file-prefix (data-test.runner/data-file-prefix ~namespaced-test-key)
-       ;     testdata (data-test.runner/load-test-data file-prefix)
-       ;      {:keys [input expectation]} testdata]
-         ~@body)))
-
 (defmacro defdatatest [n & body]
-  (let [namespaced-test-key (keyword (str *ns*) (name n))]
-    (println namespaced-test-key)
-    (data-test/datatestdef-form namespaced-test-key body)))
-
-(defmacro defdatatest2
-  "Defines ...."
-  [name & body]
-  (when ct/*load-tests*
-  `(def ~(vary-meta name assoc :test 
-     `(fn [] 
-        `(let [testdata `(runner/load-test-data `(runner/data-file-prefix name))
-               {:keys [input expectation]} testdata] 
-           ~@body)))
-      (fn [] (ct/test-var (var ~name))))))
+  `(clojure.test/deftest ~(symbol (name n))
+     (let [namespaced-test-key# ~(keyword (str *ns*) (name n))
+           file-prefix# (data-test.runner/data-file-prefix namespaced-test-key#)
+           testdata# (data-test.runner/load-test-data file-prefix#)
+           ~(symbol 'input) (:input testdata#) 
+           ~(symbol 'expectation) (:expectation testdata#)]
+       ~@body)))

@@ -21,19 +21,26 @@
    [data-test.runner :as runner]
    [data-test :as sut]))
 
+; -------------------- explicit version ------------------
 (deftest should-test-with-data-explicit-version
   (let [testdata (runner/read-data (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
         {:keys [input expectation]} testdata]
     (is (= expectation
            input))))
 
+; -------------------------- multi method --------------------------
 (s/defmethod runner/data-test ::should-test-with-data-record-version
   [_ input :- s/Any expectation :- s/Any]
-  (= expectation
-     input))
+  (= input expectation))
 
 (deftest should-test-with-data-record-version
   (is (sut/test-with-data ::should-test-with-data-record-version)))
 
-(sut/defdatatest should-test-with-data-macro-version
-  (is true))
+; ---------------------------- macro -----------------------------
+(sut/defdatatest should-test-with-data-macro-version (is (= input expectation)))
+
+(macroexpand-1 '(sut/defdatatest should-test-with-data-macro-version (is (= 1 1))))
+
+((-> #'should-test-with-data-macro-version meta :test))
+
+(meta #'should-test-with-data-macro-version)
