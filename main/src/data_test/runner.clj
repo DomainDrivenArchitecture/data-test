@@ -25,6 +25,13 @@
   {:input s/Any
    :expectation s/Any})
 
+(def TestResult
+  {:input s/Any
+   :expectation s/Any
+   :output s/Any
+   :passed? s/Bool
+   :error s/Any})
+
 (s/defrecord TestRunner [name :- s/Keyword]
   Object
   (toString [_] (str "TestRunner: " (:name _) "]")))
@@ -32,8 +39,7 @@
 (defprotocol RunTest
   "Protocol for data driven tests"
   (name-prefix [dda-test])
-  (run-tests [dda-test])
-  )
+  (run-tests [dda-test]))
 
 (s/defn dispatch-by-name :- s/Keyword
   "Dispatcher for data-tests."
@@ -60,8 +66,7 @@
 (s/defn load-test-data
   [file-prefix :- s/Str]
   (let [file-path (str file-prefix ".edn")]
-    (read-data
-     (io/resource file-path))))
+    (read-data (io/resource file-path))))
 
 (extend-type TestRunner
   RunTest

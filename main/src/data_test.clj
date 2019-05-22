@@ -23,14 +23,26 @@
   [test-name :- s/Keyword]
   (runner/run-tests (runner/create-test-runner test-name)))
 
-(defmacro defdatatest [name & body]
-  '(do
-    (clojure.test/deftest ~name
-      ;TODO-1: bring macro to work
-      ;TODO-2: crate filename out of package/namespace/test-name.edn
-      ;TODO-3: enable more than one test-data-set with optional infix .##
-      (let [testdata (data-test/read-data
-                      (clojure.java.io/resource 
-                       "data_test_test/should-test-with-data-macro-version.edn"))
-            {:keys [input expectation]} testdata]
-        ~@body))))
+(defn datatestdef-form [namespaced-test-key body]
+  '(do 
+     (clojure.test/deftest ~(symbol (name namespaced-test-key))
+       ;(let [file-prefix (data-test.runner/data-file-prefix ~namespaced-test-key)
+       ;     testdata (data-test.runner/load-test-data file-prefix)
+       ;      {:keys [input expectation]} testdata]
+         ~@body)))
+
+(defmacro defdatatest [n & body]
+  (let [namespaced-test-key (keyword (str *ns*) (name n))]
+    (println namespaced-test-key)
+    (data-test/datatestdef-form namespaced-test-key body)))
+
+(defmacro defdatatest2
+  "Defines ...."
+  [name & body]
+  (when ct/*load-tests*
+  `(def ~(vary-meta name assoc :test 
+     `(fn [] 
+        `(let [testdata `(runner/load-test-data `(runner/data-file-prefix name))
+               {:keys [input expectation]} testdata] 
+           ~@body)))
+      (fn [] (ct/test-var (var ~name))))))

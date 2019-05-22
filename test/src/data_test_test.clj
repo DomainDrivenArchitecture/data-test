@@ -35,5 +35,5 @@
 (deftest should-test-with-data-record-version
   (is (sut/test-with-data ::should-test-with-data-record-version)))
 
-;;(macroexpand '(sut/defdatatest should-test-with-data-macro-version
-;;                (is ture)))
+(sut/defdatatest should-test-with-data-macro-version
+  (is true))
