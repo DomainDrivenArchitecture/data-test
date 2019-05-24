@@ -39,4 +39,4 @@
   (is (thrown? RuntimeException
                (sut/load-test-data (sut/data-test-spec-file-prefix ::not-existing)))))
 
-(sut/find-data-spec-files (sut/data-test-spec-file-prefix ::test-it))
+;(sut/find-data-spec-files (sut/data-test-spec-file-prefix ::test-it))
