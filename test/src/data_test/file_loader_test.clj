@@ -36,5 +36,5 @@
          (sut/load-test-data (sut/data-file-prefix ::test-it)))))
 
 (deftest should-throw-exception
-  (is (thrown? Exception
+  (is (thrown? RuntimeException
                (sut/load-test-data (sut/data-file-prefix ::not-existing)))))

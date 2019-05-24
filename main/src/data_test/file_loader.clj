@@ -42,5 +42,6 @@
     (try
       (read-data (io/resource file-path))
       (catch IllegalArgumentException e
-             (throw (ex-info "unable to load test spec" {:cause e
-                                                         :file-path file-prefix}))))))
+             (throw (ex-info (str "Could not find test spec on " file-path)
+                             {:cause e
+                              :file-path file-prefix}))))))
