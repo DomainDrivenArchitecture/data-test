@@ -13,16 +13,30 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns data-test.runner-test
+(ns data-test.file-loader
   (:require
-   [clojure.test :refer :all]
+   [clojure.java.io :as io]
+   [clojure.string :as str]
    [schema.core :as s]
-   [data-test.runner :as sut]))
+   [aero.core :as aero]))
 
-(s/defmethod sut/data-test ::test-it
-  [_ input :- s/Any expectation :- s/Any]
-  "my-result")
+;TODO: replace schema with spec
+(def TestDataSpec
+  {:input s/Any
+   :expectation s/Any})
 
-(deftest should-reslove-multimethod
-  (is (= "my-result"
-         (sut/data-test (sut/create-test-runner ::test-it) nil nil))))
+(s/defn read-data :- TestDataSpec
+  [resource-url :- s/Str]
+  (aero/read-config resource-url))
+
+(s/defn data-file-prefix :- s/Str
+  [name-key :- s/Keyword]
+  (str/replace
+    (str/replace (str (namespace name-key) "/" (name name-key))
+                  #"-" "_")
+    #"\." "/"))
+
+(s/defn load-test-data
+  [file-prefix :- s/Str]
+  (let [file-path (str file-prefix ".edn")]
+    (read-data (io/resource file-path))))

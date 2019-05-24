@@ -15,15 +15,8 @@
 ; limitations under the License.
 (ns data-test.runner
   (:require
-   [clojure.java.io :as io]
-   [clojure.string :as str]
    [schema.core :as s]
-   [aero.core :as aero]))
-
-;TODO: replace schema with spec
-(def TestDataSet
-  {:input s/Any
-   :expectation s/Any})
+   [data-test.file-loader :as fl]))
 
 (def TestResult
   {:input s/Any
@@ -52,28 +45,12 @@
   "Multimethod for data-test."
   dispatch-by-name)
 
-(s/defn read-data :- TestDataSet
-  [resource-url :- s/Str]
-  (aero/read-config resource-url))
-
-(s/defn data-file-prefix :- s/Str
-  [name-key :- s/Keyword]
-  (str/replace
-    (str/replace (str (namespace name-key) "/" (name name-key))
-                  #"-" "_")
-    #"\." "/"))
-
-(s/defn load-test-data
-  [file-prefix :- s/Str]
-  (let [file-path (str file-prefix ".edn")]
-    (read-data (io/resource file-path))))
-
 (extend-type TestRunner
   RunTest
   (name-prefix [_]
-    (data-file-prefix (:name _)))
+    (fl/data-file-prefix (:name _)))
   (run-tests [_]
-    (let [testdata (load-test-data (data-file-prefix (:name _)))
+    (let [testdata (fl/load-test-data (fl/data-file-prefix (:name _)))
           {:keys [input expectation]} testdata]
       (data-test _ input expectation))))
 

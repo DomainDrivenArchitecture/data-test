@@ -17,17 +17,24 @@
   (:require
    [clojure.test :as ct]
    [schema.core :as s]
-   [data-test.runner :as runner]))
+   [data-test.runner :as runner]
+   [data-test.file-loader :as fl]))
+
+(def TestDataSpec fl/TestDataSpec)
 
 (s/defn test-with-data 
   [test-name :- s/Keyword]
   (runner/run-tests (runner/create-test-runner test-name)))
 
 (defmacro defdatatest [n & body]
-  `(clojure.test/deftest ~(symbol (name n))
-     (let [namespaced-test-key# ~(keyword (str *ns*) (name n))
-           file-prefix# (data-test.runner/data-file-prefix namespaced-test-key#)
-           testdata# (data-test.runner/load-test-data file-prefix#)
-           ~(symbol 'input) (:input testdata#) 
-           ~(symbol 'expectation) (:expectation testdata#)]
-       ~@body)))
+  (when ct/*load-tests*
+    (let [namespaced-test-key# (keyword (str *ns*) (name n))
+           file-prefix# (fl/data-file-prefix namespaced-test-key#)]
+      `(def ~(vary-meta n assoc
+                        :test `(fn [] 
+                                 (let [testdata# (fl/load-test-data ~file-prefix#)
+                                       ~(symbol 'input) (:input testdata#)
+                                       ~(symbol 'expectation) (:expectation testdata#)]
+                                   ~@body))
+                        :data-spec-prefix file-prefix#)
+           (fn [] (ct/test-var (var ~n)))))))

@@ -13,16 +13,25 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns data-test.runner-test
+(ns data-test.file-loader-test
   (:require
    [clojure.test :refer :all]
+   [clojure.java.io :as io]
    [schema.core :as s]
-   [data-test.runner :as sut]))
+   [data-test.file-loader :as sut]))
 
-(s/defmethod sut/data-test ::test-it
-  [_ input :- s/Any expectation :- s/Any]
-  "my-result")
+(deftest should-read-data
+  (is (= {:simple "test"}
+         (sut/read-data (io/resource "simple_aero.edn"))))
+  (is (= {:to-be-refernced "ref-test", :key1 "ref-test", :key2 "ref-test"}
+         (sut/read-data (io/resource "tagged_aero.edn"))))
+  )
 
-(deftest should-reslove-multimethod
-  (is (= "my-result"
-         (sut/data-test (sut/create-test-runner ::test-it) nil nil))))
+(deftest should-calculate-data-file-prefix
+  (is (= "data_test/file_loader_test/test_it"
+         (sut/data-file-prefix ::test-it))))
+
+(deftest should-load-data
+  (is (= {:test "data"}
+         (sut/load-test-data (sut/data-file-prefix ::test-it)))))
+

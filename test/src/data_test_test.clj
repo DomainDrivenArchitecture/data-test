@@ -37,7 +37,9 @@
   (is (sut/test-with-data ::should-test-with-data-record-version)))
 
 ; ---------------------------- macro -----------------------------
-(sut/defdatatest should-test-with-data-macro-version (is (= input expectation)))
+;(sut/defdatatest should-test-with-data-macro-version (is (= input expectation)))
+
+(sut/defdatatest2 should-test-with-data-macro-version (is (= input expectation)))
 
 (macroexpand-1 '(sut/defdatatest should-test-with-data-macro-version (is (= 1 1))))
 
