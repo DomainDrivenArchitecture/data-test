@@ -18,12 +18,13 @@
    [clojure.test :refer :all]
    [clojure.java.io :as io]
    [schema.core :as s]
+   [data-test.file-loader :as fl]
    [data-test.runner :as runner]
    [data-test :as sut]))
 
 ; -------------------- explicit version ------------------
 (deftest should-test-with-data-explicit-version
-  (let [testdata (runner/read-data (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
+  (let [testdata (fl/read-data (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
         {:keys [input expectation]} testdata]
     (is (= expectation
            input))))
@@ -37,9 +38,7 @@
   (is (sut/test-with-data ::should-test-with-data-record-version)))
 
 ; ---------------------------- macro -----------------------------
-;(sut/defdatatest should-test-with-data-macro-version (is (= input expectation)))
-
-(sut/defdatatest2 should-test-with-data-macro-version (is (= input expectation)))
+(sut/defdatatest should-test-with-data-macro-version (is (= input expectation)))
 
 (macroexpand-1 '(sut/defdatatest should-test-with-data-macro-version (is (= 1 1))))
 
