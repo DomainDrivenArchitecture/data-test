@@ -2,3 +2,4 @@
 .nrepl*
 .cpcache
 target
+pom.xml
