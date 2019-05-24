@@ -1,8 +1,5 @@
 group: travis_latest
 
-git:
-  depth: 5
-
 language: clojure
 lein: 2.8.1
 
