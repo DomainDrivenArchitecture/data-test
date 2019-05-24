@@ -39,4 +39,8 @@
 (s/defn load-test-data
   [file-prefix :- s/Str]
   (let [file-path (str file-prefix ".edn")]
-    (read-data (io/resource file-path))))
+    (try
+      (read-data (io/resource file-path))
+      (catch IllegalArgumentException e
+             (throw (ex-info "unable to load test spec" {:cause e
+                                                         :file-path file-prefix}))))))
