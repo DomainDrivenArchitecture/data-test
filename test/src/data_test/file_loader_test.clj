@@ -31,6 +31,20 @@
   (is (= "data_test/file_loader_test/test_it"
          (sut/data-test-spec-file-prefix ::test-it))))
 
+(deftest should-list-all-posible-resources
+  (is (= '("data_test/file_loader_test/test_it.edn"
+           "data_test/file_loader_test/test_it.0.edn"
+           "data_test/file_loader_test/test_it.1.edn"
+           "data_test/file_loader_test/test_it.2.edn"
+           "data_test/file_loader_test/test_it.3.edn"
+           "data_test/file_loader_test/test_it.4.edn"
+           "data_test/file_loader_test/test_it.5.edn"
+           "data_test/file_loader_test/test_it.6.edn"
+           "data_test/file_loader_test/test_it.7.edn"
+           "data_test/file_loader_test/test_it.8.edn"
+           "data_test/file_loader_test/test_it.9.edn")
+         (sut/data-test-spec-file-names ::test-it))))
+
 (deftest should-load-data
   (is (= {:test "data"}
          (sut/load-test-data (sut/data-test-spec-file-prefix ::test-it)))))
@@ -38,5 +52,3 @@
 (deftest should-throw-exception
   (is (thrown? RuntimeException
                (sut/load-test-data (sut/data-test-spec-file-prefix ::not-existing)))))
-
-;(sut/find-data-spec-files (sut/data-test-spec-file-prefix ::test-it))

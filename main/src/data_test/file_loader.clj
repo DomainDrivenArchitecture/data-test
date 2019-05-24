@@ -36,9 +36,12 @@
                   #"-" "_")
     #"\." "/"))
 
-(s/defn find-data-spec-files :- [s/Any]
-  [data-test-spec-file-prefix :- s/Str]
-  (.listFiles (io/resource (str data-test-spec-file-prefix "*.edn"))))
+(s/defn data-test-spec-file-names :- [s/Str]
+  [name-key :- s/Keyword]
+  (let [prefix (data-test-spec-file-prefix name-key)]
+    (cons (str prefix ".edn")
+          (map #(str prefix "." % ".edn")
+                (range 10)))))
 
 (s/defn load-test-data
   [file-prefix :- s/Str]
