@@ -24,7 +24,7 @@
 
 ; -------------------- explicit version ------------------
 (deftest should-test-with-data-explicit-version
-  (let [testdata (fl/read-data (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
+  (let [testdata (fl/read-test-data-spec (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
         {:keys [input expectation]} testdata]
     (is (= expectation
            input))))

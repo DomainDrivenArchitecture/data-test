@@ -48,9 +48,9 @@
 (extend-type TestRunner
   RunTest
   (name-prefix [_]
-    (fl/data-file-prefix (:name _)))
+    (fl/data-test-spec-file-prefix (:name _)))
   (run-tests [_]
-    (let [testdata (fl/load-test-data (fl/data-file-prefix (:name _)))
+    (let [testdata (fl/load-test-data (fl/data-test-spec-file-prefix (:name _)))
           {:keys [input expectation]} testdata]
       (data-test _ input expectation))))
 

@@ -20,21 +20,23 @@
    [schema.core :as s]
    [data-test.file-loader :as sut]))
 
-(deftest should-read-data
+(deftest should-read-test-data-spec
   (is (= {:simple "test"}
-         (sut/read-data (io/resource "simple_aero.edn"))))
+         (sut/read-test-data-spec (io/resource "simple_aero.edn"))))
   (is (= {:to-be-refernced "ref-test", :key1 "ref-test", :key2 "ref-test"}
-         (sut/read-data (io/resource "tagged_aero.edn"))))
+         (sut/read-test-data-spec (io/resource "tagged_aero.edn"))))
   )
 
-(deftest should-calculate-data-file-prefix
+(deftest should-calculate-data-test-spec-file-prefix
   (is (= "data_test/file_loader_test/test_it"
-         (sut/data-file-prefix ::test-it))))
+         (sut/data-test-spec-file-prefix ::test-it))))
 
 (deftest should-load-data
   (is (= {:test "data"}
-         (sut/load-test-data (sut/data-file-prefix ::test-it)))))
+         (sut/load-test-data (sut/data-test-spec-file-prefix ::test-it)))))
 
 (deftest should-throw-exception
   (is (thrown? RuntimeException
-               (sut/load-test-data (sut/data-file-prefix ::not-existing)))))
+               (sut/load-test-data (sut/data-test-spec-file-prefix ::not-existing)))))
+
+(sut/find-data-spec-files (sut/data-test-spec-file-prefix ::test-it))

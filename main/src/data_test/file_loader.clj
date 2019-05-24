@@ -25,22 +25,26 @@
   {:input s/Any
    :expectation s/Any})
 
-(s/defn read-data :- TestDataSpec
+(s/defn read-test-data-spec :- TestDataSpec
   [resource-url :- s/Str]
   (aero/read-config resource-url))
 
-(s/defn data-file-prefix :- s/Str
+(s/defn data-test-spec-file-prefix :- s/Str
   [name-key :- s/Keyword]
   (str/replace
     (str/replace (str (namespace name-key) "/" (name name-key))
                   #"-" "_")
     #"\." "/"))
 
+(s/defn find-data-spec-files :- [s/Any]
+  [data-test-spec-file-prefix :- s/Str]
+  (.listFiles (io/resource (str data-test-spec-file-prefix "*.edn"))))
+
 (s/defn load-test-data
   [file-prefix :- s/Str]
   (let [file-path (str file-prefix ".edn")]
     (try
-      (read-data (io/resource file-path))
+      (read-test-data-spec (io/resource file-path))
       (catch IllegalArgumentException e
              (throw (ex-info (str "Could not find test spec on " file-path)
                              {:message "Could not find test spec"

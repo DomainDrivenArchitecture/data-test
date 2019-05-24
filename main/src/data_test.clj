@@ -29,7 +29,7 @@
 (defmacro defdatatest [n & body]
   (when ct/*load-tests*
     (let [namespaced-test-key# (keyword (str *ns*) (name n))
-           file-prefix# (fl/data-file-prefix namespaced-test-key#)]
+           file-prefix# (fl/data-test-spec-file-prefix namespaced-test-key#)]
       `(def ~(vary-meta n assoc
                         :test `(fn [] 
                                  (let [testdata# (fl/load-test-data ~file-prefix#)
