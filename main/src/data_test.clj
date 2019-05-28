@@ -26,15 +26,15 @@
   [test-name :- s/Keyword]
   (runner/run-tests (runner/create-test-runner test-name)))
 
-(defmacro defdatatest [n & body]
+(defmacro defdatatest [n bindings & body]
   (when ct/*load-tests*
     (let [namespaced-test-key# (keyword (str *ns*) (name n))
            file-prefix# (fl/data-test-spec-file-prefix namespaced-test-key#)]
       `(def ~(vary-meta n assoc
                         :test `(fn [] 
                                  (let [testdata# (fl/load-test-data ~file-prefix#)
-                                       ~(symbol 'input) (:input testdata#)
-                                       ~(symbol 'expectation) (:expectation testdata#)]
+                                       ~(symbol (first bindings)) (:input testdata#)
+                                       ~(symbol (second bindings)) (:expectation testdata#)]
                                    ~@body))
                         :data-spec-prefix file-prefix#)
            (fn [] (ct/test-var (var ~n)))))))
