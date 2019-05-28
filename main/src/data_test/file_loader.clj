@@ -43,6 +43,16 @@
           (map #(str prefix "." % ".edn")
                 (range 10)))))
 
+(s/defn load-data-test-specs :- '(TestDataSpec)
+  [file-prefix :- s/Str]
+  (let [file-path (str file-prefix ".edn")]
+    (try
+      (read-test-data-spec (io/resource file-path))
+      (catch IllegalArgumentException e
+        (throw (ex-info (str "Could not find test spec on " file-path)
+                        {:message "Could not find test spec"
+                         :file-path file-prefix} e))))))
+
 (s/defn load-test-data
   [file-prefix :- s/Str]
   (let [file-path (str file-prefix ".edn")]
