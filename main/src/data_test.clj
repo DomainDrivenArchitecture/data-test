@@ -28,13 +28,12 @@
 
 (defmacro defdatatest [n bindings & body]
   (when ct/*load-tests*
-    (let [namespaced-test-key# (keyword (str *ns*) (name n))
-           file-prefix# (fl/data-test-spec-file-prefix namespaced-test-key#)]
+    (let [namespaced-test-key# (keyword (str *ns*) (name n))]
       `(def ~(vary-meta n assoc
                         :test `(fn [] 
-                                 (let [testdata# (fl/load-test-data ~file-prefix#)
-                                       ~(symbol (first bindings)) (:input testdata#)
-                                       ~(symbol (second bindings)) (:expectation testdata#)]
-                                   ~@body))
-                        :data-spec-prefix file-prefix#)
+                                 (doseq [data-spec# (fl/load-data-test-specs ~namespaced-test-key#)]
+                                  (let [~(symbol (first bindings)) (:input data-spec#)
+                                        ~(symbol (second bindings)) (:expectation data-spec#)]
+                                    ~@body)))
+                        :data-spec-key namespaced-test-key#)
            (fn [] (ct/test-var (var ~n)))))))

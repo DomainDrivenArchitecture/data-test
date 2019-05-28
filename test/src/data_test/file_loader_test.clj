@@ -46,7 +46,8 @@
          (sut/data-test-spec-file-names ::test-it))))
 
 (deftest should-load-data
-  (is (= {:test "data"}
+  (is (= {:test "data"
+          :data-spec-file "data_test/file_loader_test/test_it.edn"}
          (sut/load-data-test-spec (str (sut/data-test-spec-file-prefix ::test-it) ".edn")))))
 
 (deftest should-not-load-non-existing-data
@@ -54,7 +55,12 @@
          (sut/load-data-test-spec (str (sut/data-test-spec-file-prefix ::not-existing) ".edn")))))
 
 (deftest should-load-data-test-specs
-  (is (= [{:test "data"} {:test "data1"} {:test "data9"}]
+  (is (= [{:test "data"
+           :data-spec-file "data_test/file_loader_test/test_it.edn"} 
+          {:test "data1"
+           :data-spec-file "data_test/file_loader_test/test_it.1.edn"} 
+          {:test "data9"
+           :data-spec-file "data_test/file_loader_test/test_it.9.edn"}]
          (sut/load-data-test-specs ::test-it))))
 
 (deftest should-throw-exception

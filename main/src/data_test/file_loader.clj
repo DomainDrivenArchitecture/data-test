@@ -25,6 +25,11 @@
   {:input s/Any
    :expectation s/Any})
 
+(def RuntimeTestDataSpec
+  (merge 
+   TestDataSpec
+   {:data-spec-file s/Str}))
+
 (s/defn read-test-data-spec :- TestDataSpec
   [resource-url :- s/Str]
   (aero/read-config resource-url))
@@ -43,13 +48,15 @@
           (map #(str prefix "." % ".edn")
                 (range 10)))))
 
-(s/defn load-data-test-spec
+(s/defn load-data-test-spec :- RuntimeTestDataSpec
   [file-path :- s/Str]
   (let [file-resource (io/resource file-path)]
     (when file-resource
-      (read-test-data-spec file-resource))))
+      (merge 
+       {:data-spec-file file-path}
+       (read-test-data-spec file-resource)))))
 
-(s/defn load-data-test-specs :- [TestDataSpec]
+(s/defn load-data-test-specs :- [RuntimeTestDataSpec]
   [name-key :- s/Keyword]
   (let [data-test-specs (filter some?
                                 (map load-data-test-spec (data-test-spec-file-names name-key)))]
@@ -58,13 +65,3 @@
                       {:message "Could not find test spec"
                        :name-key name-key}))
       (into [] data-test-specs))))
-
-(s/defn load-test-data
-  [file-prefix :- s/Str]
-  (let [file-path (str file-prefix ".edn")]
-    (try
-      (read-test-data-spec (io/resource file-path))
-      (catch IllegalArgumentException e
-             (throw (ex-info (str "Could not find test spec on " file-path)
-                             {:message "Could not find test spec"
-                              :file-path file-prefix} e))))))

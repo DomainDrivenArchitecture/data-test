@@ -40,6 +40,9 @@
 ; ---------------------------- macro -----------------------------
 (sut/defdatatest should-test-with-data-macro-version [input expectation]
     (is (= input expectation)))
+
+(sut/defdatatest should-test-multiple-specs [input expectation]
+  (is (= input expectation)))
   
 
 (macroexpand-1 '(sut/defdatatest should-test-with-data-macro-version [input expectation] (is (= 1 1))))
