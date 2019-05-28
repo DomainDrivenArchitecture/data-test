@@ -42,7 +42,7 @@
     (is (= input expectation)))
   
 
-(macroexpand-1 '(sut/defdatatest should-test-with-data-macro-version (is (= 1 1))))
+(macroexpand-1 '(sut/defdatatest should-test-with-data-macro-version [input expectation] (is (= 1 1))))
 
 ((-> #'should-test-with-data-macro-version meta :test))
 
