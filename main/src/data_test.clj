@@ -33,7 +33,10 @@
                         :test `(fn [] 
                                  (doseq [data-spec# (fl/load-data-test-specs ~namespaced-test-key#)]
                                   (let [~(symbol (first bindings)) (:input data-spec#)
-                                        ~(symbol (second bindings)) (:expectation data-spec#)]
-                                    ~@body)))
+                                        ~(symbol (second bindings)) (:expectation data-spec#)
+                                        data-spec-file# (:data-spec-file data-spec#)]
+                                    (binding [ct/*testing-contexts*
+                                              (conj ct/*testing-contexts* data-spec-file#)]
+                                      ~@body))))
                         :data-spec-key namespaced-test-key#)
            (fn [] (ct/test-var (var ~n)))))))
