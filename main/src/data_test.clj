@@ -16,7 +16,6 @@
 (ns data-test
   (:require
    [clojure.test :as t]
-   [schema.core :as s]
    [data-test.reporter :as reporter]
    [data-test.loader :as loader]))
 
