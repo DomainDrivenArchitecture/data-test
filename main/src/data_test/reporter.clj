@@ -27,14 +27,18 @@
 (def ^:dynamic
   *target-dir* "target/datatest/")
 
+;TODO: replace schema with spec
+(def TestDataReport
+  {:test-event s/Any
+   :test-data-spec s/Any})
+
 (s/defn write-data-test-output
   [m]
   (let [data-spec-file (loader/data-spec-file *data-test-report-context*)
         output-file (str *target-dir* data-spec-file)]
     (io/make-parents output-file)
-    (spit output-file (merge
-                       {:test-event m}
-                       *data-test-report-context*))))
+    (spit output-file {:test-event m
+                       :test-data-spec *data-test-report-context*})))
 
 (defmethod t/report :default [m]
   (t/with-test-out (prn m)))
