@@ -17,14 +17,10 @@
   (:require
    [clojure.test :as ct]
    [schema.core :as s]
-   [data-test.runner :as runner]
+   [data-test.reporter :as reporter]
    [data-test.file-loader :as fl]))
 
 (def TestDataSpec fl/TestDataSpec)
-
-(s/defn test-with-data 
-  [test-name :- s/Keyword]
-  (runner/run-tests (runner/create-test-runner test-name)))
 
 (defmacro defdatatest [n bindings & body]
   (when ct/*load-tests*
@@ -34,9 +30,13 @@
                                  (doseq [data-spec# (fl/load-data-test-specs ~namespaced-test-key#)]
                                   (let [~(symbol (first bindings)) (:input data-spec#)
                                         ~(symbol (second bindings)) (:expectation data-spec#)
-                                        data-spec-file# (:data-spec-file data-spec#)]
+                                        data-spec-file# (:data-spec-file data-spec#)
+                                        message# (new java.io.StringWriter)]
                                     (binding [ct/*testing-contexts*
-                                              (conj ct/*testing-contexts* data-spec-file#)]
-                                      ~@body))))
+                                              (conj ct/*testing-contexts* data-spec-file#)
+                                              ct/*test-out* message#]
+                                      ~@body)
+                                    (reporter/write data-spec-file# data-spec# message#)
+                                    )))
                         :data-spec-key namespaced-test-key#)
            (fn [] (ct/test-var (var ~n)))))))

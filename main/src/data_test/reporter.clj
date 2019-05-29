@@ -13,16 +13,19 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns data-test.runner-test
+(ns data-test.reporter
   (:require
-   [clojure.test :refer :all]
+   [clojure.java.io :as io]
+   [clojure.string :as str]
    [schema.core :as s]
-   [data-test.runner :as sut]))
+   [aero.core :as aero]))
 
-(s/defmethod sut/data-test ::test-it
-  [_ input :- s/Any expectation :- s/Any]
-  "my-result")
-
-(deftest should-reslove-multimethod
-  (is (= "my-result"
-         (sut/data-test (sut/create-test-runner ::test-it) nil nil))))
+(s/defn write
+  [data-spec-file :- s/Str
+   data-spec
+   message]
+  (let [output-file (str "target/datatest/" data-spec-file)]
+    (clojure.java.io/make-parents output-file)
+    (spit output-file (merge
+                        {:message (str message)}
+                        data-spec))))
