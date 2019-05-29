@@ -19,7 +19,6 @@
    [clojure.java.io :as io]
    [schema.core :as s]
    [data-test.file-loader :as fl]
-   [data-test.runner :as runner]
    [data-test :as sut]))
 
 ; -------------------- explicit version ------------------
@@ -28,14 +27,6 @@
         {:keys [input expectation]} testdata]
     (is (= expectation
            input))))
-
-; -------------------------- multi method --------------------------
-(s/defmethod runner/data-test ::should-test-with-data-record-version
-  [_ input :- s/Any expectation :- s/Any]
-  (= input expectation))
-
-(deftest should-test-with-data-record-version
-  (is (sut/test-with-data ::should-test-with-data-record-version)))
 
 ; ---------------------------- macro -----------------------------
 (sut/defdatatest should-test-with-data-macro-version [input expectation]
