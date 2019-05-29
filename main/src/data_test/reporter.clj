@@ -41,6 +41,7 @@
                        :test-data-spec *data-test-report-context*})))
 
 (defmethod t/report :default [m]
+  (when *data-test-report-context* (write-data-test-output m))
   (t/with-test-out (prn m)))
 
 (defmethod t/report :pass [m]
@@ -48,6 +49,7 @@
   (t/with-test-out (t/inc-report-counter :pass)))
 
 (defmethod t/report :fail [m]
+  (when *data-test-report-context* (write-data-test-output m))
   (t/with-test-out
     (t/inc-report-counter :fail)
     (println "\nFAIL in" (t/testing-vars-str m))
@@ -57,6 +59,7 @@
     (println "  actual:" (pr-str (:actual m)))))
 
 (defmethod t/report :error [m]
+  (when *data-test-report-context* (write-data-test-output m))
   (t/with-test-out
     (t/inc-report-counter :error)
     (println "\nERROR in" (t/testing-vars-str m))

@@ -17,7 +17,6 @@
   (:require
    [clojure.test :refer :all]
    [clojure.java.io :as io]
-   [schema.core :as s]
    [data-test.loader :as sut]))
 
 (deftest should-read-test-data-spec
