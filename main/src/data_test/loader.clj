@@ -23,7 +23,7 @@
 ;TODO: replace schema with spec
 (def TestDataSpec
   {:input s/Any
-   :expectation s/Any})
+   :expected s/Any})
 
 (def RuntimeTestDataSpec
   (merge 

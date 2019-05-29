@@ -28,7 +28,7 @@
                         :test `(fn [] 
                                  (doseq [data-spec# (loader/load-data-test-specs ~namespaced-test-key#)]
                                   (let [~(symbol (first bindings)) (:input data-spec#)
-                                        ~(symbol (second bindings)) (:expectation data-spec#)
+                                        ~(symbol (second bindings)) (:expected data-spec#)
                                         data-spec-file# (:data-spec-file data-spec#)
                                         message# (new java.io.StringWriter)]
                                     (binding [t/*testing-contexts*
