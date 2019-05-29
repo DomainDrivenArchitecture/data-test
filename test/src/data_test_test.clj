@@ -17,27 +17,19 @@
   (:require
    [clojure.test :refer :all]
    [clojure.java.io :as io]
-   [schema.core :as s]
-   [data-test.loader :as fl]
+   [data-test.loader :as loader]
    [data-test :as sut]))
 
 ; -------------------- explicit version ------------------
 (deftest should-test-with-data-explicit-version
-  (let [testdata (fl/read-test-data-spec (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
-        {:keys [input expectation]} testdata]
-    (is (= expectation
+  (let [testdata (loader/read-test-data-spec (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
+        {:keys [input expected]} testdata]
+    (is (= expected
            input))))
 
 ; ---------------------------- macro -----------------------------
-(sut/defdatatest should-test-with-data-macro-version [input expectation]
-    (is (= input expectation)))
+(sut/defdatatest should-test-with-data-macro-version [input expected]
+    (is (= input expected)))
 
-(sut/defdatatest should-test-multiple-specs [input expectation]
-  (is (= input expectation)))
-  
-
-(macroexpand-1 '(sut/defdatatest should-test-with-data-macro-version [input expectation] (is (= 1 1))))
-
-((-> #'should-test-with-data-macro-version meta :test))
-
-(meta #'should-test-with-data-macro-version)
+(sut/defdatatest should-test-multiple-specs [input expected]
+  (is (= input expected)))
