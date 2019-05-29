@@ -30,6 +30,10 @@
    TestDataSpec
    {:data-spec-file s/Str}))
 
+(s/defn data-spec-file :- s/Str
+  [runtime-test-data-spec :- RuntimeTestDataSpec]
+  (:data-spec-file runtime-test-data-spec))
+
 (s/defn read-test-data-spec :- TestDataSpec
   [resource-url :- s/Str]
   (aero/read-config resource-url))

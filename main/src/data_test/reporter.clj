@@ -18,15 +18,19 @@
    [clojure.test :as t]
    [clojure.java.io :as io]
    [clojure.stacktrace :as stack]
-   [schema.core :as s]))
+   [schema.core :as s]
+   [data-test.loader :as loader]))
 
 (def ^:dynamic 
   *data-test-report-context* nil)
 
+(def ^:dynamic
+  *target-dir* "target/datatest/")
+
 (s/defn write-data-test-output
   [m]
-  (let [data-spec-file (:data-spec-file *data-test-report-context*)
-        output-file (str "target/datatest/" data-spec-file)]
+  (let [data-spec-file (loader/data-spec-file *data-test-report-context*)
+        output-file (str *target-dir* data-spec-file)]
     (io/make-parents output-file)
     (spit output-file (merge
                        {:test-event m}
