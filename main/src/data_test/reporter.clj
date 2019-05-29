@@ -15,17 +15,48 @@
 ; limitations under the License.
 (ns data-test.reporter
   (:require
+   [clojure.test :as t]
    [clojure.java.io :as io]
-   [clojure.string :as str]
-   [schema.core :as s]
-   [aero.core :as aero]))
+   [clojure.stacktrace :as stack]
+   [schema.core :as s]))
 
-(s/defn write
-  [data-spec-file :- s/Str
-   data-spec
-   message]
-  (let [output-file (str "target/datatest/" data-spec-file)]
-    (clojure.java.io/make-parents output-file)
+(def ^:dynamic 
+  *data-test-report-context* nil)
+
+(s/defn write-data-test-output
+  [m]
+  (let [data-spec-file (:data-spec-file *data-test-report-context*)
+        output-file (str "target/datatest/" data-spec-file)]
+    (io/make-parents output-file)
     (spit output-file (merge
-                        {:message (str message)}
-                        data-spec))))
+                       {:test-event m}
+                       *data-test-report-context*))))
+
+(defmethod t/report :default [m]
+  (t/with-test-out (prn m)))
+
+(defmethod t/report :pass [m]
+  (when *data-test-report-context* (write-data-test-output m))
+  (t/with-test-out (t/inc-report-counter :pass)))
+
+(defmethod t/report :fail [m]
+  (t/with-test-out
+    (t/inc-report-counter :fail)
+    (println "\nFAIL in" (t/testing-vars-str m))
+    (when (seq t/*testing-contexts*) (println (t/testing-contexts-str)))
+    (when-let [message (:message m)] (println message))
+    (println "expected:" (pr-str (:expected m)))
+    (println "  actual:" (pr-str (:actual m)))))
+
+(defmethod t/report :error [m]
+  (t/with-test-out
+    (t/inc-report-counter :error)
+    (println "\nERROR in" (t/testing-vars-str m))
+    (when (seq t/*testing-contexts*) (println (t/testing-contexts-str)))
+    (when-let [message (:message m)] (println message))
+    (println "expected:" (pr-str (:expected m)))
+    (print "  actual: ")
+    (let [actual (:actual m)]
+      (if (instance? Throwable actual)
+        (stack/print-cause-trace actual t/*stack-trace-depth*)
+        (prn actual)))))

@@ -33,10 +33,9 @@
                                         data-spec-file# (:data-spec-file data-spec#)
                                         message# (new java.io.StringWriter)]
                                     (binding [t/*testing-contexts*
-                                              (conj ct/*testing-contexts* data-spec-file#)
-                                              t/*test-out* message#]
+                                              (conj t/*testing-contexts* data-spec-file#)
+                                              reporter/*data-test-report-context* data-spec#]
                                       ~@body)
-                                    (reporter/write data-spec-file# data-spec# message#)
                                     )))
                         :data-spec-key namespaced-test-key#)
            (fn [] (t/test-var (var ~n)))))))
