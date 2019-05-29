@@ -18,7 +18,7 @@
    [clojure.test :refer :all]
    [clojure.java.io :as io]
    [schema.core :as s]
-   [data-test.file-loader :as fl]
+   [data-test.loader :as fl]
    [data-test :as sut]))
 
 ; -------------------- explicit version ------------------

@@ -13,7 +13,7 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns data-test.file-loader
+(ns data-test.loader
   (:require
    [clojure.java.io :as io]
    [clojure.string :as str]

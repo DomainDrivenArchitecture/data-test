@@ -18,7 +18,7 @@
    [clojure.test :as t]
    [schema.core :as s]
    [data-test.reporter :as reporter]
-   [data-test.file-loader :as loader]))
+   [data-test.loader :as loader]))
 
 (def TestDataSpec loader/TestDataSpec)
 

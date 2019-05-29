@@ -13,12 +13,12 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
-(ns data-test.file-loader-test
+(ns data-test.loader-test
   (:require
    [clojure.test :refer :all]
    [clojure.java.io :as io]
    [schema.core :as s]
-   [data-test.file-loader :as sut]))
+   [data-test.loader :as sut]))
 
 (deftest should-read-test-data-spec
   (is (= {:simple "test"}
@@ -28,26 +28,26 @@
   )
 
 (deftest should-calculate-data-test-spec-file-prefix
-  (is (= "data_test/file_loader_test/test_it"
+  (is (= "data_test/loader_test/test_it"
          (sut/data-test-spec-file-prefix ::test-it))))
 
 (deftest should-list-all-posible-resources
-  (is (= '("data_test/file_loader_test/test_it.edn"
-           "data_test/file_loader_test/test_it.0.edn"
-           "data_test/file_loader_test/test_it.1.edn"
-           "data_test/file_loader_test/test_it.2.edn"
-           "data_test/file_loader_test/test_it.3.edn"
-           "data_test/file_loader_test/test_it.4.edn"
-           "data_test/file_loader_test/test_it.5.edn"
-           "data_test/file_loader_test/test_it.6.edn"
-           "data_test/file_loader_test/test_it.7.edn"
-           "data_test/file_loader_test/test_it.8.edn"
-           "data_test/file_loader_test/test_it.9.edn")
+  (is (= '("data_test/loader_test/test_it.edn"
+           "data_test/loader_test/test_it.0.edn"
+           "data_test/loader_test/test_it.1.edn"
+           "data_test/loader_test/test_it.2.edn"
+           "data_test/loader_test/test_it.3.edn"
+           "data_test/loader_test/test_it.4.edn"
+           "data_test/loader_test/test_it.5.edn"
+           "data_test/loader_test/test_it.6.edn"
+           "data_test/loader_test/test_it.7.edn"
+           "data_test/loader_test/test_it.8.edn"
+           "data_test/loader_test/test_it.9.edn")
          (sut/data-test-spec-file-names ::test-it))))
 
 (deftest should-load-data
   (is (= {:test "data"
-          :data-spec-file "data_test/file_loader_test/test_it.edn"}
+          :data-spec-file "data_test/loader_test/test_it.edn"}
          (sut/load-data-test-spec (str (sut/data-test-spec-file-prefix ::test-it) ".edn")))))
 
 (deftest should-not-load-non-existing-data
@@ -56,11 +56,11 @@
 
 (deftest should-load-data-test-specs
   (is (= [{:test "data"
-           :data-spec-file "data_test/file_loader_test/test_it.edn"} 
+           :data-spec-file "data_test/loader_test/test_it.edn"} 
           {:test "data1"
-           :data-spec-file "data_test/file_loader_test/test_it.1.edn"} 
+           :data-spec-file "data_test/loader_test/test_it.1.edn"} 
           {:test "data9"
-           :data-spec-file "data_test/file_loader_test/test_it.9.edn"}]
+           :data-spec-file "data_test/loader_test/test_it.9.edn"}]
          (sut/load-data-test-specs ::test-it))))
 
 (deftest should-throw-exception
