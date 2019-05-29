@@ -15,28 +15,28 @@
 ; limitations under the License.
 (ns data-test
   (:require
-   [clojure.test :as ct]
+   [clojure.test :as t]
    [schema.core :as s]
    [data-test.reporter :as reporter]
-   [data-test.file-loader :as fl]))
+   [data-test.file-loader :as loader]))
 
-(def TestDataSpec fl/TestDataSpec)
+(def TestDataSpec loader/TestDataSpec)
 
 (defmacro defdatatest [n bindings & body]
-  (when ct/*load-tests*
+  (when t/*load-tests*
     (let [namespaced-test-key# (keyword (str *ns*) (name n))]
       `(def ~(vary-meta n assoc
                         :test `(fn [] 
-                                 (doseq [data-spec# (fl/load-data-test-specs ~namespaced-test-key#)]
+                                 (doseq [data-spec# (loader/load-data-test-specs ~namespaced-test-key#)]
                                   (let [~(symbol (first bindings)) (:input data-spec#)
                                         ~(symbol (second bindings)) (:expectation data-spec#)
                                         data-spec-file# (:data-spec-file data-spec#)
                                         message# (new java.io.StringWriter)]
-                                    (binding [ct/*testing-contexts*
+                                    (binding [t/*testing-contexts*
                                               (conj ct/*testing-contexts* data-spec-file#)
-                                              ct/*test-out* message#]
+                                              t/*test-out* message#]
                                       ~@body)
                                     (reporter/write data-spec-file# data-spec# message#)
                                     )))
                         :data-spec-key namespaced-test-key#)
-           (fn [] (ct/test-var (var ~n)))))))
+           (fn [] (t/test-var (var ~n)))))))
