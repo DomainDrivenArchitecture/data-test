@@ -15,18 +15,14 @@
   :lein-tools-deps/config {:config-files [:install :user :project]}
   :profiles {:dev {:source-paths ["test/src"]
                    :resource-paths ["test/resources"]
-                   :dependencies
-                   [[org.clojure/test.check "0.10.0-alpha3"]
-                    ;[expectations "2.2.0-SNAPSHOT"]
-                    ]
+                   :dependencies []
                    :leiningen/reply
                    {:dependencies [[org.slf4j/jcl-over-slf4j "1.8.0-beta0"]]
                     :exclusions [commons-logging]}
                    }
              :test {:test-paths ["test/src"]
                     :resource-paths ["test/resources"]
-                    :dependencies [;[expectations "2.2.0-SNAPSHOT"]
-                                   ]}}
+                    :dependencies []}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
