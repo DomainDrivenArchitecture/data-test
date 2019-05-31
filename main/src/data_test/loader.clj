@@ -62,10 +62,11 @@
 
 (s/defn load-data-test-specs :- [RuntimeTestDataSpec]
   [name-key :- s/Keyword]
-  (let [data-test-specs (filter some?
-                                (map load-data-test-spec (data-test-spec-file-names name-key)))]
+  (let [locations (data-test-spec-file-names name-key)
+        data-test-specs (filter some? (map load-data-test-spec locations))]
     (if (empty? data-test-specs)
       (throw (ex-info (str "Could not find test spec on " name-key)
                       {:message "Could not find test spec"
-                       :name-key name-key}))
+                       :name-key name-key
+                       :locations locations}))
       (into [] data-test-specs))))
