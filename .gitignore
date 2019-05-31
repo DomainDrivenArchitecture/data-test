@@ -1,5 +1,7 @@
 .lein*
 .nrepl*
 .cpcache
+.vscode
 target
 pom.xml
+src
