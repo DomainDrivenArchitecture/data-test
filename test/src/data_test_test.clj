@@ -22,7 +22,7 @@
 
 ; -------------------- explicit version ------------------
 (deftest should-test-with-data-explicit-version
-  (let [testdata (loader/read-test-data-spec (io/resource "data_test_test/should-test-with-data-explicit-version.edn"))
+  (let [testdata (loader/read-test-data-spec (io/resource "data_test_test/should_test_with_data_explicit_version.edn"))
         {:keys [input expected]} testdata]
     (is (= expected
            input))))
