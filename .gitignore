@@ -4,4 +4,4 @@
 .vscode
 target
 pom.xml
-src
+/src
