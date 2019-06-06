@@ -24,7 +24,8 @@
          (sut/read-test-data-spec (io/resource "simple_aero.edn"))))
   (is (= {:to-be-refernced "ref-test", :key1 "ref-test", :key2 "ref-test"}
          (sut/read-test-data-spec (io/resource "tagged_aero.edn"))))
-  )
+  (is (thrown? RuntimeException
+               (sut/read-test-data-spec (io/resource "aero_with_deserialization_issue.edn")))))
 
 (deftest should-calculate-data-test-spec-file-prefix
   (is (= "data_test/loader_test/test_it"
