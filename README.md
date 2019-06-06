@@ -45,6 +45,8 @@ FAIL in: project_test.clj: 35: should-test-multiple-specs: project_test/should_t
 
 The test data resource used will determine the testing context.
 
+As we are eating our own dog-food, we refactored our test and are using data-test. An example for refactoring you can find in our [dda-serverspec](https://github.com/DomainDrivenArchitecture/dda-serverspec-crate/commit/43abadbdb96afde6b1dc85834e465ee61eb464d2).
+
 ## Reference
 
 ### Loading Resources
