@@ -21,6 +21,7 @@
    [aero.core :as aero]))
 
 ;TODO: replace schema with spec
+;TODO: try out ^ for meta ...
 (def TestDataSpec
   {:input s/Any
    :expected s/Any
