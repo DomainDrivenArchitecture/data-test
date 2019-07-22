@@ -2,7 +2,7 @@
 [![Clojars Project](https://img.shields.io/clojars/v/dda/data-test.svg)](https://clojars.org/dda/data-test)
 [![Build Status](https://travis-ci.org/DomainDrivenArchitecture/data-test.svg?branch=master)](https://travis-ci.org/DomainDrivenArchitecture/data-test)
 
-[![Slack](https://img.shields.io/badge/chat-clojurians-green.svg?style=flat)](https://clojurians.slack.com/messages/#dda-pallet/) | [<img src="https://domaindrivenarchitecture.org/img/mastodon.svg" width=50 alt="we@social.meissa-gmbh.de"> We at mastodon](https://social.meissa-gmbh.de/@team) | [Website & Blog](https://domaindrivenarchitecture.org)
+[![Slack](https://img.shields.io/badge/chat-clojurians-green.svg?style=flat)](https://clojurians.slack.com/messages/#dda-pallet/) | [<img src="https://meissa-gmbh.de/img/community/Mastodon_Logotype.svg" width=20 alt="team@social.meissa-gmbh.de"> team@social.meissa-gmbh.de](https://social.meissa-gmbh.de/@team) | [Website & Blog](https://domaindrivenarchitecture.org)
 
 ## About
 
