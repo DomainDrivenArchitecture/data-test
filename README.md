@@ -82,9 +82,20 @@ As you can see, input and expected can be used in your test code. You have to de
 You can use [aero](https://github.com/juxt/aero) in your test data declaration, e.g.
 
 ```clojure
-{:to-be-refernced "ref-test"
- :key1 #ref [:to-be-refernced]
- :key2 #ref [:to-be-refernced]}
+{:references {:to-be-refernced "ref-test"}
+ :input #ref [:references :to-be-refernced]
+ :expected #ref [:references :to-be-refernced]}
+```
+
+### Adding Meta
+You can add some metadata to your data files, e.g.
+
+```clojure
+{:input some-data
+ :expected some-data
+ :meta {:name "name of data"
+        :description "describe what testcase is represented by this piec of data"
+        :link "https://add-some-link-here"}}
 ```
 
 ### Generated Output
