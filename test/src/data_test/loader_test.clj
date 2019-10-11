@@ -20,9 +20,10 @@
    [data-test.loader :as sut]))
 
 (deftest should-read-test-data-spec
-  (is (= {:simple "test"}
+  (is (= {:input "test"
+          :expected true}
          (sut/read-test-data-spec (io/resource "simple_aero.edn"))))
-  (is (= {:to-be-refernced "ref-test", :key1 "ref-test", :key2 "ref-test"}
+  (is (= {:references {:to-be-refernced "ref-test"}, :input "ref-test", :expected "ref-test"}
          (sut/read-test-data-spec (io/resource "tagged_aero.edn"))))
   (is (thrown? RuntimeException
                (sut/read-test-data-spec (io/resource "aero_with_deserialization_issue.edn")))))
@@ -46,7 +47,8 @@
          (sut/data-test-spec-file-names ::test-it))))
 
 (deftest should-load-data
-  (is (= {:test "data"
+  (is (= {:input "data"
+          :expectation true
           :data-spec-file "data_test/loader_test/test_it.edn"}
          (sut/load-data-test-spec (str (sut/data-test-spec-file-prefix ::test-it) ".edn")))))
 
@@ -55,11 +57,14 @@
          (sut/load-data-test-spec (str (sut/data-test-spec-file-prefix ::not-existing) ".edn")))))
 
 (deftest should-load-data-test-specs
-  (is (= [{:test "data"
+  (is (= [{:input "data"
+           :expectation true
            :data-spec-file "data_test/loader_test/test_it.edn"} 
-          {:test "data1"
+          {:input "data1"
+           :expectation true
            :data-spec-file "data_test/loader_test/test_it.1.edn"} 
-          {:test "data9"
+          {:input "data9"
+           :expectation true
            :data-spec-file "data_test/loader_test/test_it.9.edn"}]
          (sut/load-data-test-specs ::test-it))))
 

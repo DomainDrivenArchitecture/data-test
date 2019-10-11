@@ -1,1 +1,2 @@
-{:test "data9"}
+{:input "data9"
+ :expectation true}

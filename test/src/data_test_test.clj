@@ -17,8 +17,11 @@
   (:require
    [clojure.test :refer :all]
    [clojure.java.io :as io]
+   [schema.core :as s]
    [data-test.loader :as loader]
    [data-test :as sut]))
+
+(s/set-fn-validation! true)
 
 ; -------------------- explicit version ------------------
 (deftest should-test-with-data-explicit-version

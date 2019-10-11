@@ -27,7 +27,8 @@
    :expected s/Any
    (s/optional-key :meta) {(s/optional-key :name) s/Str
                            (s/optional-key :description) s/Str
-                           (s/optional-key :link) s/Str}})
+                           (s/optional-key :link) s/Str}
+   (s/optional-key :references) s/Any})
 
 (def RuntimeTestDataSpec
   (merge 
@@ -38,8 +39,8 @@
   [runtime-test-data-spec :- RuntimeTestDataSpec]
   (:data-spec-file runtime-test-data-spec))
 
-(s/defn read-test-data-spec :- TestDataSpec
-  [resource-url :- s/Str]
+(s/defn read-test-data-spec ; :- TestDataSpec - at least TestDataSpec but more keys are allowed
+  [resource-url] ; input is a url object
   (aero/read-config resource-url))
 
 (s/defn data-test-spec-file-prefix :- s/Str
@@ -56,7 +57,7 @@
           (map #(str prefix "." % ".edn")
                 (range 10)))))
 
-(s/defn load-data-test-spec :- RuntimeTestDataSpec
+(s/defn load-data-test-spec ; either :- RuntimeTestDataSpec or nil
   [file-path :- s/Str]
   (let [file-resource (io/resource file-path)]
     (when file-resource
@@ -64,7 +65,7 @@
        {:data-spec-file file-path}
        (read-test-data-spec file-resource)))))
 
-(s/defn load-data-test-specs :- [RuntimeTestDataSpec]
+(s/defn load-data-test-specs ; :- [RuntimeTestDataSpec] at least but more keys are allowed in elements
   [name-key :- s/Keyword]
   (let [locations (data-test-spec-file-names name-key)
         data-test-specs (filter some? (map load-data-test-spec locations))]
