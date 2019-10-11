@@ -1,4 +1,4 @@
-(defproject dda/data-test "0.1.1"
+(defproject dda/data-test "0.1.2-SNAPSHOT"
   :description "a data driven testing framework."
   :url "https://domaindrivenarchitecture.org"
   :license {:name "Apache License, Version 2.0"
