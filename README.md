@@ -11,6 +11,12 @@ data-test separates test data from test code and allows a more data driven appro
 
 ## Usage
 
+Import data-test to your project
+
+```clojure
+[dda/data-test "0.1.1"]
+```
+
 Define your data test similar to `deftest` and express your test e.g. with `is` macro. The given binding `[input expected]` will let symbols which can be used in your test code.
 
 ```clojure
@@ -113,6 +119,6 @@ Each data-test execution will report it's results to "target/datatest/". The key
 
 ## License
 
-Copyright © 2021 meissa GmbH
+Copyright © 2022 meissa GmbH
 Licensed under the [Apache License, Version 2.0](LICENSE) (the "License")
 Pls. find licenses of our subcomponents [here](doc/SUBCOMPONENT_LICENSE)
