@@ -116,6 +116,13 @@ Each data-test execution will report it's results to "target/datatest/". The key
                     :data-spec-file s/Str}})
 ```
 
+## Development & mirrors
+Development happens at: https://repo.prod.meissa.de/meissa/data-test
+
+Mirrors are:
+* https://gitlab.com/domaindrivenarchitecture/data-test (CI issues and PR)
+* https://github.com/DomainDrivenArchitecture/data-test
+
 ## License
 
 Copyright © 2022 meissa GmbH
