@@ -1,4 +1,4 @@
-# data-test - project has moved to federated gitea: https://repo.prod.meissa.de/meissa/data-test
+# data-test
 
 [![Clojars Project](https://img.shields.io/clojars/v/dda/data-test.svg)](https://clojars.org/dda/data-test)
 [![Build Status](https://travis-ci.org/DomainDrivenArchitecture/data-test.svg?branch=master)](https://travis-ci.org/DomainDrivenArchitecture/data-test)
